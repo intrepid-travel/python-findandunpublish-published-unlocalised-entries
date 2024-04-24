@@ -27,9 +27,15 @@ if not deliveryToken:
     config.logging.critical('{}Delivery Token Missing as an Environment Variable. Exiting Script.{}'.format(config.RED, config.END))
     exit()
 
+branchName = os.getenv('CS_BRANCH', None)
+if not branchName:
+    config.logging.critical('{}Branch name Missing as an Environment Variable. Exiting Script.{}'.format(config.RED, config.END))
+    exit()
+
 deliveryTokenHeader = {
     'access_token': deliveryToken,
     'api_key': apiKey,
+    'branch': branchName,
     'Content-Type': 'application/json'
 }
 

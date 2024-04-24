@@ -40,6 +40,11 @@ if not apiKey:
     config.logging.critical('{}Stack API Key Missing as an Environment Variable. Exiting Script.{}'.format(config.RED, config.END))
     exit()
 
+branchName = os.getenv('CS_BRANCH', None)
+if not branchName:
+    config.logging.critical('{}Branch name Missing as an Environment Variable. Exiting Script.{}'.format(config.RED, config.END))
+    exit()
+
 username = os.getenv('CS_USERNAME', None)
 password = os.getenv('CS_PASSWORD', None)
 
@@ -78,6 +83,7 @@ else:
 
 managementTokenHeader = {
     'authorization': managementToken,
+    'branch': branchName,
     'api_key': apiKey
 }
 
