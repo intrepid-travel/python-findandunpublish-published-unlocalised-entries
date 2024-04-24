@@ -28,9 +28,9 @@ with open(fName) as f:
     for line in f:
         entry = line.split(';')
         contentType = entry[0]
-        title = entry[1]
-        uid = entry[2]
-        locale = entry[3].replace('\n', '')
+        uid = entry[1]
+        locale = entry[2]
+        title = entry[3].replace('\n', '')
         config.logging.info('Unpublishing entry {title}, of content type: {contentType}, in locale: {locale} from environment: {environment}'.format(title=title, contentType=contentType, locale=locale, environment=environment))
         cma.unpublishEntry(contentType, uid, environment, locale)
     

@@ -59,10 +59,10 @@ for contentType in contentTypes:
 config.logging.info('{BOLD} Finished logging all entries found. Total count: {counter}{END}'.format(BOLD=config.BOLD, counter=counter, END=config.END))
 config.logging.info('Writing entries to a CSV file.')
 
-csvContent = 'Content Type;Title;Entry UID;Locale\n'
+csvContent = 'Content Type;Entry UID;Locale;Title\n'
 
 for entry in entriesFoundsArr:
-    csvContent = csvContent + entry['contentType'] + ';' + entry['title'] + ';' + entry['uid'] + ';' + entry['locale'] + '\n'
+    csvContent = csvContent + entry['contentType'] + ';' + entry['uid'] + ';' + entry['locale'] + ';' + entry['title']+ '\n'
 
 f='EntriesList_PublishedIn' + publishedLocale + '.csv' 
 with open(f, 'w') as filetowrite:
