@@ -15,12 +15,17 @@ oskar.eiriksson@contentstack.com
 
 '''
 
+import os
 import cma
 import cda
 import config
 
 # The environment to check in - Change it to your publishing environment in Contentstack
-environment = 'development'
+environment = os.getenv('CS_ENVIRONMENT', None)
+if not environment:
+    config.logging.critical('{}Environment name Missing as an Environment Variable. Exiting Script.{}'.format(config.RED, config.END))
+    exit()
+
 '''
 The locale you will check for in the published entries (In this case the master locale).
 If you have a locale that is not the master but still a defined fallback for some third level locales, 

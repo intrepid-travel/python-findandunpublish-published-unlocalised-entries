@@ -11,10 +11,16 @@ Warning: This script makes changes to your stack. It unpublishes all unlocalised
 oskar.eiriksson@contentstack.com
 
 '''
+import os
 import cma
 import config
 
-environment = 'development'
+
+environment = os.getenv('CS_ENVIRONMENT', None)
+if not environment:
+    config.logging.critical('{}Environment name Missing as an Environment Variable. Exiting Script.{}'.format(config.RED, config.END))
+    exit()
+
 fName = 'EntriesList_PublishedInen-us.csv' # File we want to read
 
 with open(fName) as f:
