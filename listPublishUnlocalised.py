@@ -31,7 +31,7 @@ The locale you will check for in the published entries (In this case the master 
 If you have a locale that is not the master but still a defined fallback for some third level locales, 
 you might want to run this script again with that non-master locale.
 '''
-publishedLocale = 'en-us'
+publishedLocale = 'en'
 
 # Getting all locales on the stack
 locales = []
