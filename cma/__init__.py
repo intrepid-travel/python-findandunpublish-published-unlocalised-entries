@@ -226,7 +226,7 @@ def getAllLanguages():
     url = '{region}v3/locales?include_count=true'.format(region=region)
     return typicalGetIterate(url, 'locales')
 
-def getAllEnvironments(apiKey, token, region):
+def getAllEnvironments():
     '''
     Gets all environments
     sample url: https://api.contentstack.io/v3/environments?include_count={boolean_value}&asc={field_uid}&desc={field_uid}
