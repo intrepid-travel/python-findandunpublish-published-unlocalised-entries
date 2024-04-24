@@ -48,7 +48,7 @@ entriesFoundsArr = []
 counter = 0
 for contentType in contentTypes:
     for locale in locales:
-        entries = cda.getAllEntries(contentType, locale, environment)
+        entries = cma.getAllEntries(contentType, locale, environment)
         if entries:
             for entry in entries['entries']:
                 if entry['locale'] == publishedLocale:
