@@ -20,18 +20,18 @@ import cma
 import cda
 import config
 
+# The environment to check in - Change it to your publishing environment in Contentstack
+environment = os.getenv('CS_ENVIRONMENT', None)
+if not environment:
+    config.logging.critical('{}Environment name Missing as an Environment Variable. Exiting Script.{}'.format(config.RED, config.END))
+    exit()
+
 '''
 The locale you will check for in the published entries (In this case the master locale).
 If you have a locale that is not the master but still a defined fallback for some third level locales, 
 you might want to run this script again with that non-master locale.
 '''
 publishedLocale = 'en'
-
-environments = []
-for l in cma.getAllEnvironments()['environments']:
-    environments.append(l['name'])
-
-config.logging.info('{green}list of environments: {environments}{end}'.format(green=config.GREEN, environments=environments, end=config.END))
 
 # Getting all locales on the stack
 locales = []
@@ -48,22 +48,21 @@ entriesFoundsArr = []
 counter = 0
 for contentType in contentTypes:
     for locale in locales:
-        for environment in environments:
-            entries = cma.getAllEntries(contentType, locale, environment)
-            if entries:
-                for entry in entries['entries']:
-                    if entry['locale'] == publishedLocale:
-                        counter += 1
-                        config.logging.info('{yellow}Entry found published in {environment} in {publishedLocale} in locale {locale}: {entryUID}, of content type {contentType}{end}'.format(yellow=config.YELLOW, environment=environment, publishedLocale=publishedLocale, locale=locale, entryUID=entry['uid'], contentType=contentType, end=config.END))
-                        entriesFoundsArr.append({environment: environment, 'title': entry['title'], 'uid': entry['uid'], 'contentType': contentType, 'locale': locale})
+        entries = cma.getAllEntries(contentType, locale, environment)
+        if entries:
+            for entry in entries['entries']:
+                if entry['locale'] == publishedLocale:
+                    counter += 1
+                    config.logging.info('{yellow}Entry found published in {publishedLocale} in locale {locale}: {entryUID}, of content type {contentType}{end}'.format(yellow=config.YELLOW, publishedLocale=publishedLocale, locale=locale, entryUID=entry['uid'], contentType=contentType, end=config.END))
+                    entriesFoundsArr.append({'title': entry['title'], 'uid': entry['uid'], 'contentType': contentType, 'locale': locale})
 
 config.logging.info('{BOLD} Finished logging all entries found. Total count: {counter}{END}'.format(BOLD=config.BOLD, counter=counter, END=config.END))
 config.logging.info('Writing entries to a CSV file.')
 
-csvContent = 'Content Type;Entry UID;Locale;Environment;Title\n'
+csvContent = 'Content Type;Entry UID;Locale;Title\n'
 
 for entry in entriesFoundsArr:
-    csvContent = csvContent + entry['contentType'] + ';' + entry['uid'] + ';' + entry['locale'] + ';' + entry['environment'] + ';' + entry['title']+ '\n'
+    csvContent = csvContent + entry['contentType'] + ';' + entry['uid'] + ';' + entry['locale'] + ';' + entry['title']+ '\n'
 
 f='EntriesList_PublishedIn' + publishedLocale + '.csv' 
 with open(f, 'w') as filetowrite:
